@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vm-monitoring-bicep
+  namespace: crossplane-system
+data:
+  vm-monitoring.bicep: |
+    targetScope = 'resourceGroup'
+
+    param vmName string
+    param logAnalyticsWorkspace string
+
+    resource diagnostic 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+      name: '${vmName}-diagnostic'
+      scope: resourceId('Microsoft.Compute/virtualMachines', vmName)
+      properties: {
+        workspaceId: resourceId('Microsoft.OperationalInsights/workspaces', logAnalyticsWorkspace)
+        logs: [
+          {
+            category: 'Administrative'
+            enabled: true
+            retentionPolicy: {
+              enabled: false
+              days: 0
+            }
+          }
+        ]
+        metrics: [
+          {
+            category: 'AllMetrics'
+            enabled: true
+            retentionPolicy: {
+              enabled: false
+              days: 0
+            }
+          }
+        ]
+      }
+    }

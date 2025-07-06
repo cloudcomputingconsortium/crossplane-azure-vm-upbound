@@ -1,0 +1,49 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: devenvironment.azure.platform.example.org
+spec:
+  compositeTypeRef:
+    apiVersion: platform.example.org/v1alpha1
+    kind: DevEnvironment
+  resources:
+    - name: virtualmachine
+      base:
+        apiVersion: compute.azure.upbound.io/v1beta1
+        kind: VirtualMachine
+        spec:
+          forProvider:
+            location: centralus
+            resourceGroupName: rg-vhdatest
+            vmSize: Standard_D2s_v5
+            deleteDataDisksOnTermination: true
+            deleteOsDiskOnTermination: true
+            osProfile:
+              computerName: vm-dev
+              adminUsername: adminUser
+              adminPasswordSecretRef:
+                name: vm-password
+                key: password
+                namespace: crossplane-system
+            osProfileLinuxConfig:
+              disablePasswordAuthentication: false
+            storageOsDisk:
+              caching: ReadWrite
+              createOption: FromImage
+              managedDiskType: Standard_LRS
+              name: vm-dev-osdisk
+              diskSizeGb: 64
+            storageImageReference:
+              publisher: Canonical
+              offer: UbuntuServer
+              sku: 20_04-lts-gen2
+              version: latest
+          providerConfigRef:
+            name: azure-provider
+      patches:
+        - fromFieldPath: "spec.parameters.location"
+          toFieldPath: "spec.forProvider.location"
+        - fromFieldPath: "spec.parameters.vmSize"
+          toFieldPath: "spec.forProvider.vmSize"
+        - fromFieldPath: "spec.parameters.adminPasswordSecretName"
+          toFieldPath: "spec.forProvider.osProfile.adminPasswordSecretRef.name"

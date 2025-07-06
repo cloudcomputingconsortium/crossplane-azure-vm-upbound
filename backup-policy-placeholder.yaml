@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vm-backup-policy-placeholder
+  namespace: crossplane-system
+data:
+  note: |
+    Azure backup policy and alert rule groups are not natively supported via Crossplane at this time.
+    Use Azure Policy or a Kubernetes Job to provision these with Azure CLI or Bicep externally.

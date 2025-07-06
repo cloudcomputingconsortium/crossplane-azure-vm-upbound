@@ -1,0 +1,19 @@
+apiVersion: platform.example.org/v1alpha1
+kind: DevEnvironmentClaim
+metadata:
+  name: dev-env-{{ .Values.env }}
+  namespace: crossplane-system
+spec:
+  parameters:
+    location: {{ .Values.location }}
+    vmSize: {{ .Values.vmSize }}
+    adminPasswordSecretName: {{ .Values.adminPasswordSecretName }}
+    virtualNetworkName: {{ .Values.virtualNetworkName }}
+    subnetName: {{ .Values.subnetName }}
+    os:
+      publisher: {{ .Values.osPublisher }}
+      offer: {{ .Values.osOffer }}
+      sku: {{ .Values.osSku }}
+      version: {{ .Values.osVersion }}
+    rbacRole: {{ .Values.rbacRole }}
+    tags: {{ .Values.tags | toYaml | nindent 6 }}

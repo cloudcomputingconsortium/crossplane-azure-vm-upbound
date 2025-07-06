@@ -1,0 +1,14 @@
+apiVersion: network.azure.upbound.io/v1beta1
+kind: Subnet
+metadata:
+  name: subnet-default
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: default
+    addressPrefix: 10.0.1.0/24
+    resourceGroupName: rg-vhdatest
+    virtualNetworkName: vnet-prod-centralus
+    location: centralus
+  providerConfigRef:
+    name: azure-provider

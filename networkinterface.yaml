@@ -1,0 +1,17 @@
+apiVersion: network.azure.upbound.io/v1beta1
+kind: NetworkInterface
+metadata:
+  name: vm-prod-centralus-nic
+  namespace: crossplane-system
+spec:
+  forProvider:
+    location: centralus
+    resourceGroupName: rg-vhdatest
+    ipConfigurations:
+      - name: ipconfig1
+        subnetId: /subscriptions/578cc0bf-8f3b-4437-b7ff-c350dc1d397f/resourceGroups/rg-vhdatest/providers/Microsoft.Network/virtualNetworks/vnet-prod-centralus/subnets/default
+        privateIPAllocationMethod: Dynamic
+    tags:
+      CreatedBy: samuel.navarro@achieve-1.com
+  providerConfigRef:
+    name: azure-provider

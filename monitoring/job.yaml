@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vm-monitoring-job
+  namespace: crossplane-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: deploy-monitoring
+          image: mcr.microsoft.com/azure-cli
+          command:
+            - /bin/bash
+            - -c
+            - |
+              az login --identity
+              az deployment group create \
+                --resource-group rg-vhdatest \
+                --template-file /scripts/vm-monitoring.bicep \
+                --parameters vmName=vm-prod-centralus logAnalyticsWorkspace=log-ws-dev
+          volumeMounts:
+            - name: bicep-scripts
+              mountPath: /scripts
+      restartPolicy: OnFailure
+      volumes:
+        - name: bicep-scripts
+          configMap:
+            name: vm-monitoring-bicep

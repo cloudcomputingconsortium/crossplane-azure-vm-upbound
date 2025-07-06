@@ -1,0 +1,13 @@
+apiVersion: network.azure.upbound.io/v1beta1
+kind: PublicIPAddress
+metadata:
+  name: vm-prod-centralus-pip
+  namespace: crossplane-system
+spec:
+  forProvider:
+    location: centralus
+    resourceGroupName: rg-vhdatest
+    allocationMethod: Static
+    sku: Basic
+  providerConfigRef:
+    name: azure-provider

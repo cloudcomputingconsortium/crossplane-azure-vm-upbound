@@ -1,0 +1,4 @@
+apiVersion: v2
+name: azure-dev-env
+description: A Helm chart to provision Azure DevEnvironment using Crossplane
+version: 0.1.0

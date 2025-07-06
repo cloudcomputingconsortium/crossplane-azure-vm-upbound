@@ -1,0 +1,15 @@
+env: dev
+location: centralus
+vmSize: Standard_D2s_v5
+adminPasswordSecretName: vm-password
+virtualNetworkName: vnet-{{ .Values.env }}
+subnetName: subnet-{{ .Values.env }}
+osPublisher: Canonical
+osOffer: UbuntuServer
+osSku: 20_04-lts-gen2
+osVersion: latest
+rbacRole: dev-role
+tags:
+  CreatedBy: samuel.navarro@achieve-1.com
+  Environment: {{ .Values.env }}
+  Team: platform

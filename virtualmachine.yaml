@@ -1,0 +1,41 @@
+apiVersion: compute.azure.upbound.io/v1beta1
+kind: VirtualMachine
+metadata:
+  name: vm-prod-centralus
+  namespace: crossplane-system
+spec:
+  forProvider:
+    location: centralus
+    resourceGroupName: rg-vhdatest
+    networkInterfaceIDs:
+      - /subscriptions/578cc0bf-8f3b-4437-b7ff-c350dc1d397f/resourceGroups/rg-vhdatest/providers/Microsoft.Network/networkInterfaces/vm-prod-centralus-nic
+    vmSize: Standard_D2s_v5
+    deleteDataDisksOnTermination: true
+    deleteOsDiskOnTermination: true
+    osProfile:
+      computerName: vm-prod-centralus
+      adminUsername: adminUser
+      adminPasswordSecretRef:
+        name: vm-password
+        key: password
+        namespace: crossplane-system
+    osProfileLinuxConfig:
+      disablePasswordAuthentication: false
+    storageOsDisk:
+      caching: ReadWrite
+      createOption: FromImage
+      managedDiskType: Standard_LRS
+      name: vm-prod-centralus-osdisk
+      diskSizeGb: 128
+    storageImageReference:
+      publisher: MicrosoftWindowsServer
+      offer: WindowsServer
+      sku: 2022-datacenter-azure-edition-hotpatch
+      version: latest
+    tags:
+      CreatedBy: samuel.navarro@achieve-1.com
+      Environment: prod
+      Workload: Windows Servers
+      WorkloadOwner: Windows Servers
+  providerConfigRef:
+    name: azure-provider

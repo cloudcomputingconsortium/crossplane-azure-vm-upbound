@@ -1,0 +1,10 @@
+apiVersion: platform.example.org/v1alpha1
+kind: DevEnvironmentClaim
+metadata:
+  name: dev-env-sample
+  namespace: crossplane-system
+spec:
+  parameters:
+    location: centralus
+    vmSize: Standard_D2s_v5
+    adminPasswordSecretName: vm-password
