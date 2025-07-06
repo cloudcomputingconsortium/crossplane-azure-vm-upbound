@@ -8,4 +8,4 @@ for env in dev stage prod; do
   echo "$env passed."
 done
 
-echo "✅ All environments validated."
+echo "All environments validated."
